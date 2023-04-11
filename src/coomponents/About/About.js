@@ -17,12 +17,7 @@ function About() {
               *Customizable settings to adjust the difficulty and speed of the game <br />
 *Leaderboard to track your progress and compete with other players around the world <br />
       </div>
-      <div className='note'>
-      Instructions: <br />
-Type the words or sentences that appear on the screen as quickly and accurately as possible.
- You can use either a keyboard or a mobile device to play the game.
- The game ends when you reach the time limit or make too many mistakes.
-      </div>
+      
       <div  className='note'>Developer Information: <br />
         Our team of experienced developers is passionate about creating fun and engaging games that help people improve their skills.
          We believe that everyone can benefit from improving their typing speed and accuracy,
