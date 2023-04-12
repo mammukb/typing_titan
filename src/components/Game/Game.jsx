@@ -30,6 +30,8 @@ function Game() {
             setwon(true);
         }
     }
+    const [accuracy, setaccuracy] = useState(100);
+    const [timer, settimer] = useState(undefined);
 
     useEffect(() => {
         let correctLetterCount = 0,
@@ -116,32 +118,33 @@ function Game() {
             // on first keyDown start counting time in sec and calculate wpm(words per minute).
 
             if (firstKeyDown) {
-                setInterval(
-                    /* this function will be called on each second */
-                    () => {
-                        time = time + 1;
-                        setTotalTime(time);
-                        setremainingTime(90 - time);
+                settimer(
+                    setInterval(
+                        /* this function will be called on each second */
+                        () => {
+                            time = time + 1;
+                            setTotalTime(time);
+                            setremainingTime(90 - time);
 
-                        // letters typed per second.
+                            // letters typed per second.
 
-                        let letterPerSec = correctLetterCount / time;
+                            let letterPerSec = correctLetterCount / time;
 
-                        /* The "word" is an average of 5 characters.
+                            /* The "word" is an average of 5 characters.
                            To calculate WPM, simply take the number of words typed in a minute
                            with no typos and divide by five. For example, if you type 100 words
                            in a minute including spaces, your typing speed would be 20 WPM.
-                           https://www.ratatype.com/typing-test/#:~:text=The%20most%20common,be%2020%20WPM.
                         */
 
-                        //    5 letters == a word
+                            //    5 letters == a word
 
-                        let secPerWord = 5 / letterPerSec;
-                        let wordPerMin = parseInt(60 / secPerWord);
+                            let secPerWord = 5 / letterPerSec;
+                            let wordPerMin = parseInt(60 / secPerWord);
 
-                        setWpm(wordPerMin);
-                    },
-                    1000 // 1000 ms == 1 s.
+                            setWpm(wordPerMin);
+                        },
+                        1000 // 1000 ms == 1 s.
+                    )
                 );
             }
             firstKeyDown = false;
@@ -163,6 +166,9 @@ function Game() {
                 isWon(correctLetterCount, passage.length);
             }
             count++;
+            setaccuracy(
+                parseInt((correctLetterCount / 5 / (passage.length / 5)) * 100)
+            );
         };
 
         // focus on body by default(to start typing without clicking on the page).
@@ -179,14 +185,16 @@ function Game() {
         };
     }, [passage]);
 
-    const [timeTook, setTimeTook] = useState(0);
-    const [staticWpm, setstaticWpm] = useState(0);
     useEffect(() => {
         if (won) {
-            setTimeTook(totalTime);
-            setstaticWpm(wpm);
+            clearInterval(timer);
         }
     }, [won]);
+    useEffect(() => {
+        if (remainingTime <= 0) {
+            clearInterval(timer);
+        }
+    }, [remainingTime]);
 
     return (
         <div className="maingame">
@@ -204,21 +212,23 @@ function Game() {
                 </div>
                 <div>
                     {/* WPM */}
-                    {wpm}
+                    WPM : {wpm}
                 </div>
                 {/* time */}
                 <div>
-                    {parseInt(remainingTime / 60)} :{" "}
+                    time : {parseInt(remainingTime / 60)} :{" "}
                     {parseInt(remainingTime % 60)}
                 </div>
+                <div>accuracy : {accuracy}</div>
             </div>
             {remainingTime === 0 ? (
                 <div className="float">time over</div>
             ) : null}
             {won ? (
                 <div className="float">
-                    You completed the passage in {parseInt(timeTook / 60)} :{" "}
-                    {parseInt(timeTook % 60)} min wpm = {staticWpm}
+                    You completed the passage in {parseInt(totalTime / 60)} :{" "}
+                    {parseInt(totalTime % 60)} min wpm = {wpm}
+                    accuracy : {accuracy}
                 </div>
             ) : null}
         </div>
