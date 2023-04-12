@@ -51,7 +51,7 @@ export default function Control(setConverted, setWpm) {
                 // if space, insert all the p tag to a div and store it in convertedPassage.
 
                 convertedPassage[wordIndex++] = (
-                    <div key={`word_${wordIndex}`} className="d-flex">
+                    <div key={`word_${wordIndex}`} className="passage">
                         {temp}
                     </div>
                 );
@@ -73,7 +73,7 @@ export default function Control(setConverted, setWpm) {
         // inserting last word into convertedPassage, since there is no space after the last word.
 
         convertedPassage[wordIndex] = (
-            <div key={`word_${wordIndex}`} className="d-flex">
+            <div key={`word_${wordIndex}`} className="d-flex passage">
                 {temp}
             </div>
         );

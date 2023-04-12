@@ -15,4 +15,9 @@ font-size: 2vw;
 }
 .wordarea{
     background-color: black;
+    color: white;
+    
+}
+.passage{
+    display: flex;
 }

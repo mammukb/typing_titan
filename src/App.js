@@ -1,11 +1,11 @@
-import Namecard from "./coomponents/Namecard/Namecard";
+import Namecard from "./components/Namecard/Namecard";
 import './App.css'
-import Navbar from "./coomponents/Navbar/Navbar";
+import Navbar from "./components/Navbar/Navbar";
 import { Route,Routes} from "react-router-dom";
-import Home from  "./coomponents/Home/Home"
-import Highscore from  "./coomponents/Highscore/Highscore"
-import About from  "./coomponents/About/About" 
-import Game from "./coomponents/Game/Game"
+import Home from  "./components/Home/Home"
+import Highscore from  "./components/Highscore/Highscore"
+import About from  "./components/About/About" 
+import Game from "./components/Game/Game"
 
 
 
