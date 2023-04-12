@@ -1,17 +1,14 @@
-
 import { words } from "./words";
-import {useState, useEffect} from 'react'
-
+import { useState, useEffect } from "react";
 import "./Game.css";
-// import control from "./control";
+
 function Game() {
+    // to store a modified version of passage which is converted into jsx.
 
-     // to store a modified version of passage which is converted into jsx.
+    const [converted, setConverted] = useState([]);
+    const [wpm, setWpm] = useState(0);
 
-     const [converted, setConverted] = useState([]);
-     const [wpm, setWpm] = useState(0);
-
-      // to store current passage.
+    // to store current passage.
     const [passage, setPassage] = useState("");
 
     /* if passage = "abc g"
@@ -25,9 +22,16 @@ function Game() {
     */
 
     const [totalTime, setTotalTime] = useState(0);
+    const [remainingTime, setremainingTime] = useState(90);
+    const [won, setwon] = useState(false);
+    function isWon(correctLetterCount, wordLength) {
+        if (correctLetterCount === wordLength) {
+            console.log(correctLetterCount, " : ", wordLength);
+            setwon(true);
+        }
+    }
 
     useEffect(() => {
-
         let correctLetterCount = 0,
             time = 0;
 
@@ -117,6 +121,7 @@ function Game() {
                     () => {
                         time = time + 1;
                         setTotalTime(time);
+                        setremainingTime(90 - time);
 
                         // letters typed per second.
 
@@ -155,6 +160,7 @@ function Game() {
                 let p_tag = document.getElementById(`passage_${count}`);
                 p_tag.style.color = "rgb(163, 238, 175)";
                 correctLetterCount++;
+                isWon(correctLetterCount, passage.length);
             }
             count++;
         };
@@ -173,7 +179,15 @@ function Game() {
         };
     }, [passage]);
 
-   
+    const [timeTook, setTimeTook] = useState(0);
+    const [staticWpm, setstaticWpm] = useState(0);
+    useEffect(() => {
+        if (won) {
+            setTimeTook(totalTime);
+            setstaticWpm(wpm);
+        }
+    }, [won]);
+
     return (
         <div className="maingame">
             <div className="instr">
@@ -185,14 +199,28 @@ function Game() {
             </div>
             <div className="wordarea">
                 <div className="passage">
-                {converted}
+                    {/* passage */}
+                    {converted}
                 </div>
-                {/* <div>
-                {wpm}
-                </div> */}
-                
-               
+                <div>
+                    {/* WPM */}
+                    {wpm}
+                </div>
+                {/* time */}
+                <div>
+                    {parseInt(remainingTime / 60)} :{" "}
+                    {parseInt(remainingTime % 60)}
+                </div>
             </div>
+            {remainingTime === 0 ? (
+                <div className="float">time over</div>
+            ) : null}
+            {won ? (
+                <div className="float">
+                    You completed the passage in {parseInt(timeTook / 60)} :{" "}
+                    {parseInt(timeTook % 60)} min wpm = {staticWpm}
+                </div>
+            ) : null}
         </div>
     );
 }

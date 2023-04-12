@@ -21,3 +21,12 @@ font-size: 2vw;
 .passage{
     display: flex;
 }
+.float{
+    z-index: 5;
+    position: absolute;
+    width: 75%;
+    height: 50%;
+    align-self: center;
+    background-color: aqua;
+    border-radius: 10px;
+}
