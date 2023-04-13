@@ -1,5 +1,5 @@
 .navbar{
-    background-color: #91ccff;
+    background-color:mintcream;
     height: 100vh;
     width: 14%;
    
@@ -19,9 +19,9 @@
     
 }
 .button {
-    background-color:#ffa500;
+    background-color:white;
     border: none;
-    color: white;
+    color: black;
     padding: 8% 14%;
     text-align: center;
     text-decoration: none;
@@ -30,6 +30,7 @@
     margin-top: 13%;
   }
   button:hover{
-    background-color:#b57f1b;
+    background-color :black;
+    color: white;
     cursor: pointer;
   }

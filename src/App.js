@@ -6,6 +6,7 @@ import Home from  "./components/Home/Home"
 import Highscore from  "./components/Highscore/Highscore"
 import About from  "./components/About/About" 
 import Game from "./components/Game/Game"
+import Footer from "./components/footer/Footer";
 
 
 
@@ -25,6 +26,7 @@ function App() {
   <Route   Component={Game} path="/game"  />
 </Routes>
 </div>
+<Footer/>
 
 
      
