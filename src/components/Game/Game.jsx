@@ -34,6 +34,8 @@ function Game() {
     const [timer, settimer] = useState(undefined);
 
     useEffect(() => {
+           
+
         let correctLetterCount = 0,
             time = 0;
 
@@ -195,6 +197,7 @@ function Game() {
             clearInterval(timer);
         }
     }, [remainingTime]);
+
 
     return (
         <div className="maingame">
