@@ -5,6 +5,8 @@ import {useNavigate,} from 'react-router'
 
 
 
+
+
 function Home() {
  const [user, setuser] = useState('')
   const navigate= useNavigate();
@@ -19,12 +21,13 @@ function Home() {
      <form action="">
      <input className='inputbar'   onChange={(e)=> {setuser(e.target.value); console.log(user)}} 
      placeholder='Enter Your Name' type="text" />
-     <input className='submitbtn'   onClick={()=>{navigate("/game")}}  type="submit" />
+     <input className='submitbtn'   onClick={()=>{ user? navigate("/game"): alert("Enter Your Name")}}  type="submit" />
      </form>
      </div>
+    
       
          
-      
+
     
 
 
