@@ -4,7 +4,6 @@ import "./Game.css";
 
 function Game() {
     // to store a modified version of passage which is converted into jsx.
-
     const [converted, setConverted] = useState([]);
     const [wpm, setWpm] = useState(0);
 
@@ -24,23 +23,33 @@ function Game() {
     const [totalTime, setTotalTime] = useState(0);
     const [remainingTime, setremainingTime] = useState(90);
     const [won, setwon] = useState(false);
+
+    // to check if the user has completed the current word.
     function isWon(correctLetterCount, wordLength) {
         if (correctLetterCount === wordLength) {
             console.log(correctLetterCount, " : ", wordLength);
             setwon(true);
         }
     }
+
     const [accuracy, setaccuracy] = useState(100);
     const [timer, settimer] = useState(undefined);
 
     useEffect(() => {
-           
+        try {
+            for (let index = 0; index < passage.length; index++) {
+                console.log("index", index);
+                document.getElementById(`passage_${index}`).style.color =
+                    "white";
+            }
+        } catch (error) {}
+    }, [converted]);
+
+    useEffect(() => {
+        console.log("mounted");
 
         let correctLetterCount = 0,
             time = 0;
-
-        let index = Math.floor(Math.random() * words.length);
-        setPassage(words[index]);
 
         // converting passage into jsx (<div><p>single letter</p></div>) format.
 
@@ -79,6 +88,9 @@ function Game() {
                         &nbsp;
                     </p>
                 );
+                document.getElementById(
+                    `passage_${index}`
+                ).style.backgroundColor = "transparent";
 
                 // clearing contents of temp.
 
@@ -184,20 +196,44 @@ function Game() {
         return () => {
             document.removeEventListener("keydown", keyDownHandler);
             setConverted(null);
+            console.log("unmounted");
         };
     }, [passage]);
+
+    const [wordCount, setwordCount] = useState(1);
+    const [usedWords, setusedWords] = useState([]);
+
+    function changePassage() {
+        console.log("usedWords: ", usedWords);
+
+        let index = null;
+        do {
+            index = Math.floor(Math.random() * words.length);
+        } while (index in usedWords);
+        setPassage(words[index]);
+        setusedWords([...usedWords, index]);
+        setwordCount(wordCount + 1);
+    }
 
     useEffect(() => {
         if (won) {
             clearInterval(timer);
+            if (wordCount <= 10) {
+                changePassage();
+                setwon(false);
+            }
         }
     }, [won]);
+
+    useEffect(() => {
+        changePassage();
+    }, []);
+
     useEffect(() => {
         if (remainingTime <= 0) {
             clearInterval(timer);
         }
     }, [remainingTime]);
-
 
     return (
         <div className="maingame">
