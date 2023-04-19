@@ -1,3 +1,5 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+
 import { useState, useEffect } from "react";
 import { words } from "./words";
 import "./Game.css";
@@ -123,7 +125,7 @@ function Game() {
             setConvertedPassage(null);
             console.log("unmounted");
         };
-    }, [passage]);
+    }, [passage, passage.length]);
 
     useEffect(() => {
         try {
@@ -172,46 +174,37 @@ function Game() {
     }, [remainingTime]);
 
     return (
-        <div className="maingame">
-            <div className="instr">
-                Instructions: <br />
-                Type the words or sentences that appear on the screen as quickly
-                and accurately as possible. You can use either a keyboard or a
-                mobile device to play the game. The game ends when you reach the
-                time limit or make too many mistakes.
-            </div>
-            <div className="props">
-            <div className="values">
-                    {/* WPM */}
-                    WPM  <br /> {wpm}
-                </div>
-                <div className="values">
-                    TIME  <br /> {parseInt(remainingTime / 60)} :{" "}
-                    {parseInt(remainingTime % 60)}
-                </div>
-                <div className="values" >ACCURACY  <br /> {accuracy}</div>
-            </div>
-            <div className="wordarea">
-                <div className="passage">
-                    {/* passage */}
-                    {convertedPassage}
-                </div>
-                
-                {/* time */}
-                
-                
-            </div>
-            {remainingTime === 0 ? (
-                <div className="float">time over</div>
-            ) : null}
-            {won ? (
-                <div className="float">
-                    You completed the passage in {parseInt(totalTime / 60)} :{" "}
-                    {parseInt(totalTime % 60)} min wpm = {wpm}
-                    accuracy : {accuracy}
-                </div>
-            ) : null}
+        <div className="main-game">
+        <div className="instructions">
+          <h2>Instructions:</h2>
+          <p>
+            Type the words or sentences that appear on the screen as quickly and accurately as possible.
+            You can use either a keyboard or a mobile device to play the game.
+            The game ends when you reach the time limit or make too many mistakes.
+          </p>
         </div>
+        <div className="word-area">
+          <div className="passage">
+            {/* passage */}
+            {convertedPassage}
+          </div>
+          <div className="game-stats">
+            <p>WPM : {wpm}</p>
+            <p>Time : {parseInt(remainingTime / 60)}:{parseInt(remainingTime % 60)}</p>
+            <p>Accuracy : {accuracy}</p>
+          </div>
+        </div>
+        {remainingTime === 0 ? (
+          <div className="floating-text">Time's up!</div>
+        ) : null}
+        {won ? (
+          <div className="floating-text">
+            <p>You completed the passage in {parseInt(totalTime / 60)}:{parseInt(totalTime % 60)} minutes</p>
+            <p>WPM : {wpm}</p>
+            <p>Accuracy : {accuracy}</p>
+          </div>
+        ) : null}
+      </div>
     );
 }
 

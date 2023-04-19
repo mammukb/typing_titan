@@ -23,10 +23,11 @@ font-size: 2vw;
     
 }
 .passage{
-   
+   background-color: black;
     display: flex;
     margin: auto;
     font-size: 4vw;
+    border-radius: 10px;
 }
 .float{
     z-index: 5;
