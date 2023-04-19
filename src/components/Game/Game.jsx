@@ -8,7 +8,9 @@ function Game() {
     // Remove isFirstKeyDown from local storage on refresh
     window.onbeforeunload = function () {
         localStorage.removeItem("isFirstKeyDown");
-        localStorage.removeItem("correctLetterCount");
+        localStorage.removeItem("totalCorrectLetterCount");
+        localStorage.removeItem("typed");
+        localStorage.removeItem("accuracy");
     };
 
     // Set up state variables
@@ -19,6 +21,7 @@ function Game() {
     const [remainingTime, setRemainingTime] = useState(90);
     const [won, setWon] = useState(false);
     const [accuracy, setAccuracy] = useState(100);
+    const [averageAccuracy, setAverageAccuracy] = useState(100);
     const [timer, setTimer] = useState(undefined);
     const [wordCount, setWordCount] = useState(1);
     const [usedWords, setUsedWords] = useState([]);
@@ -26,38 +29,26 @@ function Game() {
     const [correctLetters, setCorrectLetters] = useState(0);
 
     useEffect(() => {
-        // console.log("correctLetterCount = " + correctLetters);
-        // console.log("totalLetterCount = " + totalLetterCount);
-        // console.log("totalLetterCount = " + totalLetterCount);
-        console.log("totalLetterCount = " + totalLetterCount, "correctLetterCount = " + correctLetters);
-        if (correctLetters === totalLetterCount && (correctLetters !== 0 || totalLetterCount!==0)) {
-            // console.log("complete");
+        if (
+            correctLetters === totalLetterCount &&
+            (correctLetters !== 0 || totalLetterCount !== 0)
+        ) {
             setWon(true);
         }
     }, [correctLetters, totalLetterCount]);
 
     useEffect(() => {
-        // console.log("totalLetterCount = " + totalLetterCount)
-        // console.log("passsage = " + passage);
-        setTotalLetterCount(totalLetterCount + passage.length)
-        // console.log("passage.length = " + passage.length)
-        
+        setTotalLetterCount(totalLetterCount + passage.length);
     }, [passage]);
-    
-
-    /*  // Check if the user has completed the current word
-    function isWordCompleted(correctLetterCount, wordLength) {
-        if (correctLetterCount === wordLength) {
-            setWon(true);
-        }
-    } */
 
     useEffect(() => {
-        let correctLetterCount =
-            JSON.parse(localStorage.getItem("correctLetterCount")) ?? 0;
+        let totalCorrectLetterCount =
+            JSON.parse(localStorage.getItem("totalCorrectLetterCount")) ?? 0;
         let time = 0;
         let isFirstKeyDown =
             JSON.parse(localStorage.getItem("isFirstKeyDown")) ?? true;
+        let correctLetterCount = 0;
+        let accuracy = 0;
 
         // Convert passage string to JSX format
         const passageArray = passage.split(" ");
@@ -90,9 +81,24 @@ function Game() {
 
         // Set up event listener for key presses
         let count = 0;
+
         const keyDownHandler = (e) => {
+            // retreving already typed letters from localStorage
+            let typed = JSON.parse(localStorage.getItem("typed")) ?? [];
+
             if (e.key === "Backspace") {
                 count = count > 0 ? count - 1 : 0;
+                if (typed[count] === passage[count]) {
+                    totalCorrectLetterCount--;
+                    correctLetterCount--;
+                    accuracy = parseInt(
+                        (correctLetterCount / 5 / (passage.length / 5)) * 100
+                    );
+                    setAccuracy(accuracy);
+                   
+                }
+                typed.splice(count, 1);
+                localStorage.setItem("typed", JSON.stringify(typed));
                 let pTag = document.getElementById(`passage_${count}`);
                 pTag.style.color = "white";
                 return;
@@ -106,6 +112,9 @@ function Game() {
                 return;
             }
 
+            // storing entered letters to localStorage
+            localStorage.setItem("typed", JSON.stringify([...typed, e.key]));
+
             // On first keyDown, start counting time and calculate WPM
             if (isFirstKeyDown) {
                 localStorage.setItem("isFirstKeyDown", "false");
@@ -115,11 +124,14 @@ function Game() {
                         setTotalTime(time);
                         setRemainingTime(90 - time);
 
-                        const letterPerSec = JSON.parse(localStorage.getItem("correctLetterCount")) / time;
-                        console.log("correct letter count = " + JSON.parse(localStorage.getItem("correctLetterCount")), "time = " + time);
+                        const letterPerSec =
+                            JSON.parse(
+                                localStorage.getItem("totalCorrectLetterCount")
+                            ) / time;
+
                         const secPerWord = 5 / letterPerSec;
                         const wordPerMin = parseInt(60 / secPerWord);
-                        console.log("wordPerMin: " + wordPerMin);
+
                         setWpm(wordPerMin);
                     }, 1000)
                 );
@@ -138,27 +150,23 @@ function Game() {
             } else {
                 let p_tag = document.getElementById(`passage_${count}`);
                 p_tag.style.color = "rgb(163, 238, 175)";
-                // correctLetterCount++;
-                console.log("correctLettercount = "+correctLetterCount);
-                console.log('correct.............................................');
-                console.log(localStorage.getItem('correctLetterCount'));
+
+                totalCorrectLetterCount++;
                 correctLetterCount++;
-               /*  try {
-                    
-                    localStorage.setItem("correctLetterCount", correctLetterCount++);
-                } catch (error) {
-                   
-                } */
-                localStorage.setItem("correctLetterCount", correctLetterCount);
-                console.log(localStorage.getItem('correctLetterCount'));
-                // console.log("correctLettercount = "+correctLetterCount);
-                setCorrectLetters(correctLetterCount);
-                // isWordCompleted(correctLetterCount, passage.length);
+
+                //
+                localStorage.setItem(
+                    "totalCorrectLetterCount",
+                    totalCorrectLetterCount
+                );
+                accuracy = parseInt(
+                    (correctLetterCount / 5 / (passage.length / 5)) * 100
+                );
+                setAccuracy(accuracy);
+                setCorrectLetters(totalCorrectLetterCount);
             }
             count++;
-            setAccuracy(
-                parseInt((correctLetterCount / 5 / (passage.length / 5)) * 100)
-            );
+            
         };
 
         // focus on body by default(to start typing without clicking on the page).
@@ -170,8 +178,9 @@ function Game() {
         return () => {
             document.removeEventListener("keydown", keyDownHandler);
             setConvertedPassage(null);
-            
-            console.log("unmounted");
+            localStorage.removeItem("typed");
+            let accuracyArray = JSON.parse(localStorage.getItem('accuracy')) ?? [];
+            localStorage.setItem("accuracy",JSON.stringify([...accuracyArray, accuracy]))
         };
     }, [passage, passage.length]);
 
@@ -189,35 +198,43 @@ function Game() {
 
         do {
             index = Math.floor(Math.random() * (words.length - 1));
-            // console.log("usedWords: ", usedWords, "index = ", index);
         } while (usedWords.includes(index));
-        
+
         setPassage(words[index]);
         setUsedWords([...usedWords, index]);
         setWordCount(wordCount + 1);
     }
 
+    function computeAccuracy() {
+        let accuracyValues = JSON.parse(localStorage.getItem('accuracy')) ?? []
+        const sum = accuracyValues.reduce((total, value) => total + value);
+        const average = sum / accuracyValues.length;
+        setAverageAccuracy(average)
+    }
+
     useEffect(() => {
         if (won) {
-            // console.log("wordCount = ", wordCount);
             if (wordCount <= 10) {
-                changePassage(()=>{setTotalLetterCount()});
+                changePassage(() => {
+                    setTotalLetterCount();
+                });
                 setWon(false);
             } else {
                 clearInterval(timer);
+                computeAccuracy();
                 setWon(true);
             }
         }
     }, [won]);
 
     useEffect(() => {
-        console.log("setting passage");
         changePassage();
     }, []);
 
     useEffect(() => {
         if (remainingTime <= 0) {
             clearInterval(timer);
+            computeAccuracy()
         }
     }, [remainingTime]);
 
