@@ -29,7 +29,7 @@ function Game() {
         // console.log("correctLetterCount = " + correctLetters);
         // console.log("totalLetterCount = " + totalLetterCount);
         // console.log("totalLetterCount = " + totalLetterCount);
-        // console.log("totalLetterCount = " + totalLetterCount, "correctLetterCount = " + correctLetters);
+        console.log("totalLetterCount = " + totalLetterCount, "correctLetterCount = " + correctLetters);
         if (correctLetters === totalLetterCount && (correctLetters !== 0 || totalLetterCount!==0)) {
             // console.log("complete");
             setWon(true);
@@ -115,10 +115,11 @@ function Game() {
                         setTotalTime(time);
                         setRemainingTime(90 - time);
 
-                        const letterPerSec = correctLetterCount / time;
+                        const letterPerSec = JSON.parse(localStorage.getItem("correctLetterCount")) / time;
+                        console.log("correct letter count = " + JSON.parse(localStorage.getItem("correctLetterCount")), "time = " + time);
                         const secPerWord = 5 / letterPerSec;
                         const wordPerMin = parseInt(60 / secPerWord);
-                        // console.log("wordPerMin: " + wordPerMin);
+                        console.log("wordPerMin: " + wordPerMin);
                         setWpm(wordPerMin);
                     }, 1000)
                 );
@@ -137,7 +138,20 @@ function Game() {
             } else {
                 let p_tag = document.getElementById(`passage_${count}`);
                 p_tag.style.color = "rgb(163, 238, 175)";
+                // correctLetterCount++;
+                console.log("correctLettercount = "+correctLetterCount);
+                console.log('correct.............................................');
+                console.log(localStorage.getItem('correctLetterCount'));
                 correctLetterCount++;
+               /*  try {
+                    
+                    localStorage.setItem("correctLetterCount", correctLetterCount++);
+                } catch (error) {
+                   
+                } */
+                localStorage.setItem("correctLetterCount", correctLetterCount);
+                console.log(localStorage.getItem('correctLetterCount'));
+                // console.log("correctLettercount = "+correctLetterCount);
                 setCorrectLetters(correctLetterCount);
                 // isWordCompleted(correctLetterCount, passage.length);
             }
@@ -156,7 +170,7 @@ function Game() {
         return () => {
             document.removeEventListener("keydown", keyDownHandler);
             setConvertedPassage(null);
-            localStorage.setItem("correctLetterCount", correctLetterCount);
+            
             console.log("unmounted");
         };
     }, [passage, passage.length]);
