@@ -22,17 +22,39 @@ function Game() {
     const [timer, setTimer] = useState(undefined);
     const [wordCount, setWordCount] = useState(1);
     const [usedWords, setUsedWords] = useState([]);
+    const [totalLetterCount, setTotalLetterCount] = useState(0);
+    const [correctLetters, setCorrectLetters] = useState(0);
+
+    useEffect(() => {
+        // console.log("correctLetterCount = " + correctLetters);
+        // console.log("totalLetterCount = " + totalLetterCount);
+        // console.log("totalLetterCount = " + totalLetterCount);
+        // console.log("totalLetterCount = " + totalLetterCount, "correctLetterCount = " + correctLetters);
+        if (correctLetters === totalLetterCount && (correctLetters !== 0 || totalLetterCount!==0)) {
+            // console.log("complete");
+            setWon(true);
+        }
+    }, [correctLetters, totalLetterCount]);
+
+    useEffect(() => {
+        // console.log("totalLetterCount = " + totalLetterCount)
+        // console.log("passsage = " + passage);
+        setTotalLetterCount(totalLetterCount + passage.length)
+        // console.log("passage.length = " + passage.length)
+        
+    }, [passage]);
     
 
-    // Check if the user has completed the current word
+    /*  // Check if the user has completed the current word
     function isWordCompleted(correctLetterCount, wordLength) {
         if (correctLetterCount === wordLength) {
             setWon(true);
         }
-    }
+    } */
 
     useEffect(() => {
-        let correctLetterCount = JSON.parse(localStorage.getItem("correctLetterCount")) ?? 0;;
+        let correctLetterCount =
+            JSON.parse(localStorage.getItem("correctLetterCount")) ?? 0;
         let time = 0;
         let isFirstKeyDown =
             JSON.parse(localStorage.getItem("isFirstKeyDown")) ?? true;
@@ -96,9 +118,8 @@ function Game() {
                         const letterPerSec = correctLetterCount / time;
                         const secPerWord = 5 / letterPerSec;
                         const wordPerMin = parseInt(60 / secPerWord);
-                        console.log('wordPerMin: ' + wordPerMin);
+                        // console.log("wordPerMin: " + wordPerMin);
                         setWpm(wordPerMin);
-
                     }, 1000)
                 );
             }
@@ -117,7 +138,8 @@ function Game() {
                 let p_tag = document.getElementById(`passage_${count}`);
                 p_tag.style.color = "rgb(163, 238, 175)";
                 correctLetterCount++;
-                isWordCompleted(correctLetterCount, passage.length);
+                setCorrectLetters(correctLetterCount);
+                // isWordCompleted(correctLetterCount, passage.length);
             }
             count++;
             setAccuracy(
@@ -134,7 +156,7 @@ function Game() {
         return () => {
             document.removeEventListener("keydown", keyDownHandler);
             setConvertedPassage(null);
-            localStorage.setItem("correctLetterCount",correctLetterCount)
+            localStorage.setItem("correctLetterCount", correctLetterCount);
             console.log("unmounted");
         };
     }, [passage, passage.length]);
@@ -148,13 +170,14 @@ function Game() {
         } catch (error) {}
     }, [convertedPassage]);
 
-    function changePassage() {
+    function changePassage(callback) {
         let index = null;
 
         do {
             index = Math.floor(Math.random() * (words.length - 1));
-            console.log("usedWords: ", usedWords, "index = ", index);
+            // console.log("usedWords: ", usedWords, "index = ", index);
         } while (usedWords.includes(index));
+        
         setPassage(words[index]);
         setUsedWords([...usedWords, index]);
         setWordCount(wordCount + 1);
@@ -162,8 +185,9 @@ function Game() {
 
     useEffect(() => {
         if (won) {
+            // console.log("wordCount = ", wordCount);
             if (wordCount <= 10) {
-                changePassage();
+                changePassage(()=>{setTotalLetterCount()});
                 setWon(false);
             } else {
                 clearInterval(timer);
@@ -173,6 +197,7 @@ function Game() {
     }, [won]);
 
     useEffect(() => {
+        console.log("setting passage");
         changePassage();
     }, []);
 
