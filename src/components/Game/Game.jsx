@@ -180,21 +180,26 @@ function Game() {
                 mobile device to play the game. The game ends when you reach the
                 time limit or make too many mistakes.
             </div>
+            <div className="props">
+            <div className="values">
+                    {/* WPM */}
+                    WPM  <br /> {wpm}
+                </div>
+                <div className="values">
+                    TIME  <br /> {parseInt(remainingTime / 60)} :{" "}
+                    {parseInt(remainingTime % 60)}
+                </div>
+                <div className="values" >ACCURACY  <br /> {accuracy}</div>
+            </div>
             <div className="wordarea">
                 <div className="passage">
                     {/* passage */}
                     {convertedPassage}
                 </div>
-                <div>
-                    {/* WPM */}
-                    WPM : {wpm}
-                </div>
+                
                 {/* time */}
-                <div>
-                    time : {parseInt(remainingTime / 60)} :{" "}
-                    {parseInt(remainingTime % 60)}
-                </div>
-                <div>accuracy : {accuracy}</div>
+                
+                
             </div>
             {remainingTime === 0 ? (
                 <div className="float">time over</div>

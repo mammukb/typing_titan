@@ -16,10 +16,17 @@ font-size: 2vw;
 .wordarea{
     background-color: black;
     color: white;
+    width: 50%;
+    margin-left: 14%;
+    margin-top: 10%;
+   
     
 }
 .passage{
+   
     display: flex;
+    margin: auto;
+    font-size: 4vw;
 }
 .float{
     z-index: 5;
@@ -29,4 +36,13 @@ font-size: 2vw;
     align-self: center;
     background-color: aqua;
     border-radius: 10px;
+}
+.props{
+    display: flex;
+    flex-direction: row;
+}
+.values{
+    margin-top: 8%;
+    margin-left: 11%;
+    font-size: 4vw;
 }
