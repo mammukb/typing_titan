@@ -1,4 +1,4 @@
-export const words=[
+/* export const words=[
     'Photosynthesis',
 'Discombobulate',
 'Hemidemisemiquaver',
@@ -14,4 +14,23 @@ export const words=[
 'Colloquialism',
 'Querulous',
 'Mischievous'
-] 
+]  */
+
+export const words = [
+    'Photos',
+    'hi',
+    'Lorem',
+    'ipsum',
+    'dolor',
+   'sit',
+    'amet',
+    'consectetur',
+    'hello',
+    'world',
+    'one',
+    'two',
+    'three',
+    'four',
+    'five',
+  'six',
+]
