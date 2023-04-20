@@ -1,4 +1,4 @@
-.maingame{
+.main-game{
     /*background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' version='1.1' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:svgjs='http://svgjs.com/svgjs' width='1440' height='560' preserveAspectRatio='none' viewBox='0 0 1440 560'%3e%3cg mask='url(%26quot%3b%23SvgjsMask1013%26quot%3b)' fill='none'%3e%3crect width='1440' height='560' x='0' y='0' fill='%230e2a47'%3e%3c/rect%3e%3cpath d='M -102.22477379820572%2c382 C -6.22%2c355.6 185.78%2c231.8 377.7752262017943%2c250 C 569.78%2c268.2 665.78%2c511.6 857.7752262017943%2c473 C 1049.78%2c434.4 1145.78%2c70.8 1337.7752262017943%2c57 C 1529.78%2c43.2 1797.33%2c361.6 1817.7752262017943%2c404 C 1838.22%2c446.4 1515.56%2c296 1440%2c269' stroke='rgba(255%2c 165%2c 0%2c 1)' stroke-width='2'%3e%3c/path%3e%3cpath d='M -891.3172474111248%2c307 C -795.32%2c285 -603.32%2c172 -411.3172474111248%2c197 C -219.32%2c222 -123.32%2c422 68.68275258887519%2c432 C 260.68%2c442 356.68%2c276.6 548.6827525888752%2c247 C 740.68%2c217.4 850.42%2c280 1028.6827525888752%2c284 C 1206.95%2c288 1357.74%2c270.4 1440%2c267' stroke='rgba(255%2c 165%2c 0%2c 1)' stroke-width='2'%3e%3c/path%3e%3cpath d='M -149.68310947141498%2c66 C -53.68%2c127.2 138.32%2c338 330.316890528585%2c372 C 522.32%2c406 618.32%2c238.8 810.316890528585%2c236 C 1002.32%2c233.2 1098.32%2c374.4 1290.316890528585%2c358 C 1482.32%2c341.6 1740.38%2c144.8 1770.316890528585%2c154 C 1800.25%2c163.2 1506.06%2c354 1440%2c404' stroke='rgba(63%2c 81%2c 181%2c 1)' stroke-width='2'%3e%3c/path%3e%3c/g%3e%3cdefs%3e%3cmask id='SvgjsMask1013'%3e%3crect width='1440' height='560' fill='white'%3e%3c/rect%3e%3c/mask%3e%3c/defs%3e%3c/svg%3e");
    */ width: 86%;
     height: 100vh;
@@ -28,6 +28,8 @@ font-size: 2vw;
     margin: auto;
     font-size: 4vw;
     border-radius: 10px;
+    width: 40%;
+    margin-top: 5%;
 }
 .float{
     z-index: 5;
@@ -38,12 +40,14 @@ font-size: 2vw;
     background-color: aqua;
     border-radius: 10px;
 }
-.props{
+.props {
     display: flex;
     flex-direction: row;
+    margin-left: 6%;
+    font-size: 4vw;
 }
-.values{
+.values {
     margin-top: 8%;
     margin-left: 11%;
-    font-size: 4vw;
+    font-size: 5vw;
 }

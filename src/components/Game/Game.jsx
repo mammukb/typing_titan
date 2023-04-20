@@ -149,7 +149,7 @@ function Game() {
                 }
             } else {
                 let p_tag = document.getElementById(`passage_${count}`);
-                p_tag.style.color = "rgb(163, 238, 175)";
+                p_tag.style.color = "rgb(6, 255, 0)";
 
                 totalCorrectLetterCount++;
                 correctLetterCount++;
@@ -246,23 +246,30 @@ function Game() {
                     Type the words or sentences that appear on the screen as
                     quickly and accurately as possible. You can use either a
                     keyboard or a mobile device to play the game. The game ends
-                    when you reach the time limit or make too many mistakes.
-                </p>
+                    when you reach the time limit. <br />
+                  NB: Press any key to  start the game
+
+                </p> <br />
+                 
             </div>
             <div className="word-area">
+            <div className="props">
+                    <p className="values">WPM  <br /> {wpm} </p>
+                    <p className="values">
+                        Time   <br />{parseInt(remainingTime / 60)}:
+                        {parseInt(remainingTime % 60)}
+                    </p>
+                    <p className="values">Accuracy  <br />{accuracy}</p>
+                </div>
                 <div className="passage">
                     {/* passage */}
                     {convertedPassage}
                 </div>
-                <div className="game-stats">
-                    <p>WPM : {wpm}</p>
-                    <p>
-                        Time : {parseInt(remainingTime / 60)}:
-                        {parseInt(remainingTime % 60)}
-                    </p>
-                    <p>Accuracy : {accuracy}</p>
-                </div>
+               
             </div>
+
+
+
             {remainingTime === 0 ? (
                 <div className="floating-text">Time's up!</div>
             ) : null}

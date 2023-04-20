@@ -13,12 +13,8 @@ function Footer() {
         <a href="https://instagram.com/__mammu_kb__?igshid=ZDdkNTZiNTM="><i className="fab fa-instagram fa-2x"></i></a>
         <a href="http://www.linkedin.com/in/muhammedkb"><i className="fab fa-linkedin fa-2x"></i></a>
       </div>
-      <p>&copy; 2023 Typing Titan. All rights reserved.</p>
-      <ul>
-        <li></li>
-        <li><a href="#">Terms of Service</a></li>
-        <li><a href="#">Contact Us</a></li>
-      </ul>
+      <p>&copy; 2023 Typing Titan <br /> All rights reserved.</p>
+     
     </div>
   </footer>
   )
